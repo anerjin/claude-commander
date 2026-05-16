@@ -118,7 +118,7 @@ button {
     <div class="actions">
       <button id="attach-file" class="secondary">파일</button>
       <button id="attach-folder" class="secondary">폴더</button>
-      <button id="auto-mode" title="claude --dangerously-skip-permissions">Auto Mode</button>
+      <button id="auto-mode" class="secondary" title="claude --dangerously-skip-permissions">Auto Mode</button>
     </div>
 
     <div class="hint">
