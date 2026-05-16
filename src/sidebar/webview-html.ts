@@ -37,27 +37,11 @@ export function buildWebviewHtml(webview: vscode.Webview, nonce: string): string
       gap: 8px;
       box-sizing: border-box;
     }
-    .header {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-weight: 600;
-      letter-spacing: 0.3px;
-      color: var(--vscode-sideBarTitle-foreground);
-    }
-    .badge {
-      font-size: 10px;
-      padding: 1px 6px;
-      border-radius: 8px;
-      background: var(--vscode-badge-background);
-      color: var(--vscode-badge-foreground);
-    }
     select.command-picker {
-      margin-left: auto;
-      max-width: 60%;
-      min-width: 140px;
-      padding: 4px 6px;
-      font-size: 11px;
+      width: 100%;
+      box-sizing: border-box;
+      padding: 6px 8px;
+      font-size: 12px;
       color: var(--vscode-input-foreground);
       background: var(--vscode-input-background);
       border: 1px solid var(--vscode-input-border, transparent);
@@ -86,18 +70,11 @@ export function buildWebviewHtml(webview: vscode.Webview, nonce: string): string
       border-color: var(--vscode-focusBorder);
     }
     .actions {
-      display: flex;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
       gap: 6px;
-      flex-wrap: wrap;
     }
-    button.danger {
-      background: var(--vscode-errorForeground, #f48771);
-      color: var(--vscode-editor-background, #1e1e1e);
-    }
-    button.danger:hover {
-      filter: brightness(1.1);
-    }
-    button {
+button {
       flex: 1 1 auto;
       padding: 6px 10px;
       cursor: pointer;
@@ -126,13 +103,9 @@ export function buildWebviewHtml(webview: vscode.Webview, nonce: string): string
 </head>
 <body>
   <div class="container">
-    <div class="header">
-      <span>🧭 Claude Commander</span>
-      <span class="badge" id="platform-badge">…</span>
-      <select id="command-picker" class="command-picker" title="슬래시 커맨드 선택">
-        <option value="">/ 명령어 선택…</option>
-      </select>
-    </div>
+    <select id="command-picker" class="command-picker" title="슬래시 커맨드 선택">
+      <option value="">/ 명령어 선택…</option>
+    </select>
 
     <textarea id="input" placeholder="여기에 입력하세요. Cmd/Ctrl+Enter 로 전송됩니다."></textarea>
 
@@ -143,14 +116,9 @@ export function buildWebviewHtml(webview: vscode.Webview, nonce: string): string
     </div>
 
     <div class="actions">
-      <button id="attach-file" class="secondary">📄 파일</button>
-      <button id="attach-folder" class="secondary">📁 폴더</button>
-    </div>
-
-    <div class="actions">
-      <button id="auto-mode" class="danger" title="claude --dangerously-skip-permissions">
-        ⚡ Auto Mode (권한 우회 세션)
-      </button>
+      <button id="attach-file" class="secondary">파일</button>
+      <button id="attach-folder" class="secondary">폴더</button>
+      <button id="auto-mode" title="claude --dangerously-skip-permissions">Auto Mode</button>
     </div>
 
     <div class="hint">
@@ -161,7 +129,6 @@ export function buildWebviewHtml(webview: vscode.Webview, nonce: string): string
   <script nonce="${nonce}">
     const vscode = acquireVsCodeApi();
     const input = document.getElementById('input');
-    const badge = document.getElementById('platform-badge');
     const picker = document.getElementById('command-picker');
 
     const send = () => {
@@ -226,9 +193,7 @@ export function buildWebviewHtml(webview: vscode.Webview, nonce: string): string
 
     window.addEventListener('message', (event) => {
       const msg = event.data;
-      if (msg.type === 'init') {
-        badge.textContent = msg.platform.toUpperCase();
-      } else if (msg.type === 'commands') {
+      if (msg.type === 'commands') {
         renderCommands(msg.groups);
       } else if (msg.type === 'insertText') {
         const start = input.selectionStart;

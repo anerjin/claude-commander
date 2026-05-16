@@ -2,6 +2,7 @@ import { CommandCategory, CommandEntry } from "./types";
 import { getBuiltinCommands } from "./catalog";
 import { scanUserCommands } from "./scanners/user-commands";
 import { scanPlugins } from "./scanners/plugins";
+import translations from "../../assets/translations-ko.json";
 
 export interface IndexResult {
   entries: CommandEntry[];
@@ -31,9 +32,17 @@ export async function buildIndex(): Promise<IndexResult> {
     scanPlugins(),
   ]);
 
-  const entries = [...builtin, ...user, ...plugin];
+  const raw = [...builtin, ...user, ...plugin];
+  const entries = raw.map(applyTranslation);
   const categories = groupByCategory(entries);
   return { entries, categories, scannedAt: Date.now() };
+}
+
+function applyTranslation(entry: CommandEntry): CommandEntry {
+  if (entry.descriptionKo) return entry;
+  const value = (translations as Record<string, unknown>)[entry.slash];
+  if (typeof value !== "string" || value.length === 0) return entry;
+  return { ...entry, descriptionKo: value };
 }
 
 function groupByCategory(entries: CommandEntry[]): CommandCategory[] {
