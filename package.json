@@ -54,6 +54,11 @@
           "name": "Commander",
           "type": "webview",
           "visibility": "visible"
+        },
+        {
+          "id": "claudeCommander.explorerView",
+          "name": "Command Explorer",
+          "visibility": "visible"
         }
       ]
     },
@@ -86,13 +91,32 @@
         "command": "claudeCommander.attachFolder",
         "title": "Claude Commander: 폴더 첨부",
         "icon": "$(file-directory)"
+      },
+      {
+        "command": "claudeCommander.openExplorer",
+        "title": "Claude Commander: 명령어 검색 (Command Explorer)",
+        "icon": "$(search)"
+      },
+      {
+        "command": "claudeCommander.refreshExplorer",
+        "title": "Claude Commander: 명령어 인덱스 새로고침",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "claudeCommander.runCommand",
+        "title": "Claude Commander: 선택한 명령어 실행"
       }
     ],
     "menus": {
       "view/title": [
         { "command": "claudeCommander.send",       "when": "view == claudeCommander.mainView", "group": "navigation@1" },
         { "command": "claudeCommander.clear",      "when": "view == claudeCommander.mainView", "group": "navigation@2" },
-        { "command": "claudeCommander.newSession", "when": "view == claudeCommander.mainView", "group": "navigation@3" }
+        { "command": "claudeCommander.newSession", "when": "view == claudeCommander.mainView", "group": "navigation@3" },
+        { "command": "claudeCommander.refreshExplorer", "when": "view == claudeCommander.explorerView", "group": "navigation@1" },
+        { "command": "claudeCommander.openExplorer",    "when": "view == claudeCommander.explorerView", "group": "navigation@2" }
+      ],
+      "commandPalette": [
+        { "command": "claudeCommander.runCommand", "when": "false" }
       ]
     },
     "keybindings": [
@@ -101,6 +125,11 @@
         "key": "ctrl+enter",
         "mac": "cmd+enter",
         "when": "focusedView == claudeCommander.mainView"
+      },
+      {
+        "command": "claudeCommander.openExplorer",
+        "key": "ctrl+k ctrl+c",
+        "mac": "cmd+k cmd+c"
       }
     ],
     "configuration": {

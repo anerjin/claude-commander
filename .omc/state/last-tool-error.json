@@ -1,0 +1,7 @@
+{
+  "tool_name": "Bash",
+  "tool_input_preview": "{\"command\":\"osascript <<'EOF'\\ntell application \\\"System Events\\\"\\n  tell process \\\"Code\\\"\\n    set frontmost to true\\n    set winNames to name of every window\\n    return winNames\\n  end tell\\nend te...",
+  "error": "Exit code 1\n101:105: execution error: System Events에 오류 발생: osascript에 보조 접근이 허용되지 않습니다. (-1728)",
+  "timestamp": "2026-05-16T10:11:13.842Z",
+  "retry_count": 1
+}
