@@ -48,6 +48,7 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
   register("claudeCommander.send", () => sidebar.focusInput());
   register("claudeCommander.clear", () => sidebar.clearInput());
   register("claudeCommander.newSession", () => sidebar.newSession());
+  register("claudeCommander.newAutoModeSession", () => sidebar.newAutoModeSession());
   register("claudeCommander.attachFile", () => (sidebar as any).attach?.("file"));
   register("claudeCommander.attachFolder", () => (sidebar as any).attach?.("folder"));
   register("claudeCommander.refreshExplorer", () => explorer.refresh());

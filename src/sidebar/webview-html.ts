@@ -75,6 +75,13 @@ export function buildWebviewHtml(webview: vscode.Webview, nonce: string): string
       gap: 6px;
       flex-wrap: wrap;
     }
+    button.danger {
+      background: var(--vscode-errorForeground, #f48771);
+      color: var(--vscode-editor-background, #1e1e1e);
+    }
+    button.danger:hover {
+      filter: brightness(1.1);
+    }
     button {
       flex: 1 1 auto;
       padding: 6px 10px;
@@ -122,6 +129,12 @@ export function buildWebviewHtml(webview: vscode.Webview, nonce: string): string
       <button id="attach-folder" class="secondary">📁 폴더</button>
     </div>
 
+    <div class="actions">
+      <button id="auto-mode" class="danger" title="claude --dangerously-skip-permissions">
+        ⚡ Auto Mode (권한 우회 세션)
+      </button>
+    </div>
+
     <div class="hint">
       M0: 챗과장 호환 입력 패널 · M1 부터 Command Explorer 활성화 예정
     </div>
@@ -145,6 +158,9 @@ export function buildWebviewHtml(webview: vscode.Webview, nonce: string): string
     });
     document.getElementById('new').addEventListener('click', () => {
       vscode.postMessage({ type: 'newSession' });
+    });
+    document.getElementById('auto-mode').addEventListener('click', () => {
+      vscode.postMessage({ type: 'newAutoModeSession' });
     });
     document.getElementById('attach-file').addEventListener('click', () => {
       vscode.postMessage({ type: 'attachFile' });

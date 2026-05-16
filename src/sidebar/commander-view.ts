@@ -8,6 +8,7 @@ type Inbound =
   | { type: "send"; text: string }
   | { type: "clear" }
   | { type: "newSession" }
+  | { type: "newAutoModeSession" }
   | { type: "attachFile" }
   | { type: "attachFolder" };
 
@@ -60,6 +61,17 @@ export class CommanderViewProvider implements vscode.WebviewViewProvider {
     this.terminal.newSession();
   }
 
+  async newAutoModeSession(): Promise<void> {
+    const choice = await vscode.window.showWarningMessage(
+      "Auto Mode 는 `claude --dangerously-skip-permissions` 로 새 세션을 시작합니다.\n모든 권한 프롬프트가 우회되니 신뢰된 작업에만 사용하세요.",
+      { modal: true },
+      "계속",
+      "취소"
+    );
+    if (choice !== "계속") return;
+    this.terminal.newAutoModeSession();
+  }
+
   private async onMessage(msg: Inbound): Promise<void> {
     switch (msg.type) {
       case "ready":
@@ -73,6 +85,9 @@ export class CommanderViewProvider implements vscode.WebviewViewProvider {
         return;
       case "newSession":
         this.terminal.newSession();
+        return;
+      case "newAutoModeSession":
+        await this.newAutoModeSession();
         return;
       case "attachFile":
         await this.attach("file");

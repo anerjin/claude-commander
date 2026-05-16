@@ -2,6 +2,13 @@
 
 ## [Unreleased]
 
+### Auto Mode 버튼 (2026-05-16)
+
+- 사이드바에 `⚡ Auto Mode (권한 우회 세션)` 버튼 추가
+- `claude --dangerously-skip-permissions` 로 새 터미널 세션 시작
+- 클릭 시 모달 확인 다이얼로그로 의도 재확인
+- Command Palette `Claude Commander: ⚡ Auto Mode 세션 (권한 우회)` 로도 실행 가능
+
 ### M2 — Prompt Templates (2026-05-16)
 
 - **12개 한글 프롬프트 템플릿 번들** — 코드 리뷰 / 설명 / 리팩토링 / 테스트 생성 /

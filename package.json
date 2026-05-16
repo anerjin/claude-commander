@@ -83,6 +83,11 @@
         "icon": "$(add)"
       },
       {
+        "command": "claudeCommander.newAutoModeSession",
+        "title": "Claude Commander: ⚡ Auto Mode 세션 (권한 우회)",
+        "icon": "$(zap)"
+      },
+      {
         "command": "claudeCommander.attachFile",
         "title": "Claude Commander: 파일 첨부",
         "icon": "$(file-add)"

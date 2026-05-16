@@ -43,6 +43,14 @@ export class ClaudeTerminalManager {
     return term;
   }
 
+  newAutoModeSession(): vscode.Terminal {
+    const term = vscode.window.createTerminal(this.name);
+    this.current = term;
+    term.show();
+    term.sendText("claude --dangerously-skip-permissions");
+    return term;
+  }
+
   disposeKnown(): void {
     for (const t of vscode.window.terminals) {
       if (KNOWN_TERMINAL_NAMES.has(t.name) || t.name.toLowerCase().includes("claude")) {
