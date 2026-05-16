@@ -1,0 +1,148 @@
+{
+  "name": "claude-commander",
+  "displayName": "Claude Commander",
+  "description": "Claude Code를 위한 한국어 친화형 커맨드 익스플로러 + 멀티세션 컴패니언",
+  "version": "0.0.1",
+  "publisher": "vibecode",
+  "license": "MIT",
+  "icon": "media/icon.png",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/anerjin/claude-commander.git"
+  },
+  "engines": {
+    "vscode": "^1.85.0",
+    "node": ">=18"
+  },
+  "categories": [
+    "Other",
+    "Programming Languages",
+    "Snippets"
+  ],
+  "keywords": [
+    "claude",
+    "claude-code",
+    "anthropic",
+    "ai",
+    "korean",
+    "command-palette",
+    "oh-my-claudecode",
+    "omc"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./dist/extension.js",
+  "capabilities": {
+    "virtualWorkspaces": { "supported": true },
+    "untrustedWorkspaces": { "supported": true }
+  },
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "claude-commander",
+          "title": "Claude Commander",
+          "icon": "media/sidebar-icon.svg"
+        }
+      ]
+    },
+    "views": {
+      "claude-commander": [
+        {
+          "id": "claudeCommander.mainView",
+          "name": "Commander",
+          "type": "webview",
+          "visibility": "visible"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "claudeCommander.focusInput",
+        "title": "Claude Commander: 입력창 포커스"
+      },
+      {
+        "command": "claudeCommander.send",
+        "title": "Claude Commander: 보내기",
+        "icon": "$(play)"
+      },
+      {
+        "command": "claudeCommander.clear",
+        "title": "Claude Commander: 입력 초기화",
+        "icon": "$(clear-all)"
+      },
+      {
+        "command": "claudeCommander.newSession",
+        "title": "Claude Commander: 새 세션 열기",
+        "icon": "$(add)"
+      },
+      {
+        "command": "claudeCommander.attachFile",
+        "title": "Claude Commander: 파일 첨부",
+        "icon": "$(file-add)"
+      },
+      {
+        "command": "claudeCommander.attachFolder",
+        "title": "Claude Commander: 폴더 첨부",
+        "icon": "$(file-directory)"
+      }
+    ],
+    "menus": {
+      "view/title": [
+        { "command": "claudeCommander.send",       "when": "view == claudeCommander.mainView", "group": "navigation@1" },
+        { "command": "claudeCommander.clear",      "when": "view == claudeCommander.mainView", "group": "navigation@2" },
+        { "command": "claudeCommander.newSession", "when": "view == claudeCommander.mainView", "group": "navigation@3" }
+      ]
+    },
+    "keybindings": [
+      {
+        "command": "claudeCommander.send",
+        "key": "ctrl+enter",
+        "mac": "cmd+enter",
+        "when": "focusedView == claudeCommander.mainView"
+      }
+    ],
+    "configuration": {
+      "title": "Claude Commander",
+      "properties": {
+        "claudeCommander.autoLaunchClaude": {
+          "type": "boolean",
+          "default": true,
+          "description": "확장 활성화 시 자동으로 claude 터미널을 시작합니다."
+        },
+        "claudeCommander.terminalName": {
+          "type": "string",
+          "default": "Claude",
+          "description": "Claude CLI를 실행할 터미널 이름."
+        },
+        "claudeCommander.wslPathAutoConvert": {
+          "type": "boolean",
+          "default": true,
+          "description": "WSL 환경에서 Windows 경로를 자동으로 변환합니다."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run package",
+    "compile": "node esbuild.config.mjs",
+    "watch": "node esbuild.config.mjs --watch",
+    "package": "node esbuild.config.mjs --production",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src --ext ts",
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "@types/vscode": "^1.85.0",
+    "@typescript-eslint/eslint-plugin": "^7.0.0",
+    "@typescript-eslint/parser": "^7.0.0",
+    "@vscode/test-electron": "^2.3.0",
+    "@vscode/vsce": "^2.24.0",
+    "esbuild": "^0.20.0",
+    "eslint": "^8.57.0",
+    "typescript": "^5.4.0",
+    "vitest": "^1.4.0"
+  }
+}
