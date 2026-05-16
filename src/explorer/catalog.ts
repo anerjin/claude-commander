@@ -37,6 +37,19 @@ const BUILTIN: BuiltinSpec[] = [
   { slash: "/privacy-settings", description: "Privacy controls",                     descriptionKo: "데이터 공유/저장 제어" },
   { slash: "/install-github-app", description: "Install GitHub app",                 descriptionKo: "GitHub 앱 설치 (자동 PR 리뷰)" },
   { slash: "/pr_comments",   description: "View PR comments",                        descriptionKo: "PR 코멘트 보기" },
+
+  { slash: "/agents",        description: "Manage subagents",                        descriptionKo: "커스텀 서브에이전트 관리" },
+  { slash: "/plugin",        description: "Manage plugins",                          descriptionKo: "플러그인 설치/제거/마켓플레이스 관리", argumentHint: "[install|manage|marketplace|...]" },
+  { slash: "/plan",          description: "Preview plan",                            descriptionKo: "플랜 모드 미리보기 / 편집" },
+  { slash: "/ide",           description: "IDE integration",                         descriptionKo: "IDE 통합 (자동 연결 / 설정)" },
+  { slash: "/resume",        description: "Resume previous session",                 descriptionKo: "이전 대화/세션 재개" },
+  { slash: "/effort",        description: "Set effort level",                        descriptionKo: "현재 세션 effort 레벨 (low/medium/high/xhigh/max)", argumentHint: "<level>" },
+  { slash: "/fast",          description: "Toggle fast mode",                        descriptionKo: "Fast 모드 토글 (Opus 4.6)" },
+  { slash: "/feedback",      description: "Send feedback",                           descriptionKo: "Anthropic 에 피드백 전송" },
+  { slash: "/loop",          description: "Recurring task",                          descriptionKo: "프롬프트/명령을 주기적으로 반복 실행",            argumentHint: "<interval> <prompt>" },
+  { slash: "/chrome",        description: "Chrome integration",                      descriptionKo: "Claude in Chrome 통합 활성화" },
+  { slash: "/upgrade",       description: "Upgrade Claude Code",                     descriptionKo: "Claude Code 업그레이드 / 사용량 한도 상향" },
+  { slash: "/keybindings",   description: "Customize keybindings",                   descriptionKo: "키 바인딩 커스터마이즈" },
 ];
 
 export function getBuiltinCommands(): CommandEntry[] {

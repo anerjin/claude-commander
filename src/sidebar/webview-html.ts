@@ -122,7 +122,7 @@ button {
     </div>
 
     <div class="hint">
-      M0: 챗과장 호환 입력 패널 · M1 부터 Command Explorer 활성화 예정
+      ⌘/Ctrl+K ⌘/Ctrl+C 명령어 검색 · ⌘/Ctrl+K ⌘/Ctrl+T 템플릿
     </div>
   </div>
 
