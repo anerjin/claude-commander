@@ -8,8 +8,15 @@ node_modules/**
 .eslintrc.json
 esbuild.config.mjs
 tsconfig.json
-**/*.map
 **/*.ts
-!dist/**
 **/.DS_Store
+dist/**/*.map
 plugin_제작/**
+.omc/**
+.git/**
+.github/**
+package-lock.json
+assets/**
+media/icon.svg
+*.vsix
+
