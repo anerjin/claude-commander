@@ -52,6 +52,21 @@ export function buildWebviewHtml(webview: vscode.Webview, nonce: string): string
       background: var(--vscode-badge-background);
       color: var(--vscode-badge-foreground);
     }
+    select.command-picker {
+      margin-left: auto;
+      max-width: 60%;
+      min-width: 140px;
+      padding: 4px 6px;
+      font-size: 11px;
+      color: var(--vscode-input-foreground);
+      background: var(--vscode-input-background);
+      border: 1px solid var(--vscode-input-border, transparent);
+      border-radius: 4px;
+      outline: none;
+    }
+    select.command-picker:focus {
+      border-color: var(--vscode-focusBorder);
+    }
     textarea {
       flex: 1;
       min-height: 120px;
@@ -114,12 +129,15 @@ export function buildWebviewHtml(webview: vscode.Webview, nonce: string): string
     <div class="header">
       <span>🧭 Claude Commander</span>
       <span class="badge" id="platform-badge">…</span>
+      <select id="command-picker" class="command-picker" title="슬래시 커맨드 선택">
+        <option value="">/ 명령어 선택…</option>
+      </select>
     </div>
 
     <textarea id="input" placeholder="여기에 입력하세요. Cmd/Ctrl+Enter 로 전송됩니다."></textarea>
 
     <div class="actions">
-      <button id="send">보내기 (⌘/Ctrl+Enter)</button>
+      <button id="send">보내기</button>
       <button id="clear" class="secondary">초기화</button>
       <button id="new" class="secondary">새 세션</button>
     </div>
@@ -144,6 +162,7 @@ export function buildWebviewHtml(webview: vscode.Webview, nonce: string): string
     const vscode = acquireVsCodeApi();
     const input = document.getElementById('input');
     const badge = document.getElementById('platform-badge');
+    const picker = document.getElementById('command-picker');
 
     const send = () => {
       const text = input.value;
@@ -162,6 +181,35 @@ export function buildWebviewHtml(webview: vscode.Webview, nonce: string): string
     document.getElementById('auto-mode').addEventListener('click', () => {
       vscode.postMessage({ type: 'newAutoModeSession' });
     });
+
+    picker.addEventListener('change', () => {
+      const slash = picker.value;
+      picker.value = '';
+      if (!slash) return;
+      const start = input.selectionStart;
+      const end = input.selectionEnd;
+      const insertion = slash + ' ';
+      input.value = input.value.slice(0, start) + insertion + input.value.slice(end);
+      const cursor = start + insertion.length;
+      input.setSelectionRange(cursor, cursor);
+      input.focus();
+    });
+
+    const renderCommands = (groups) => {
+      while (picker.options.length > 1) picker.remove(1);
+      for (const group of groups) {
+        const og = document.createElement('optgroup');
+        og.label = group.label;
+        for (const cmd of group.entries) {
+          const opt = document.createElement('option');
+          opt.value = cmd.slash;
+          opt.textContent = cmd.slash + (cmd.desc ? ' — ' + cmd.desc : '');
+          opt.title = cmd.desc || cmd.slash;
+          og.appendChild(opt);
+        }
+        picker.appendChild(og);
+      }
+    };
     document.getElementById('attach-file').addEventListener('click', () => {
       vscode.postMessage({ type: 'attachFile' });
     });
@@ -180,6 +228,8 @@ export function buildWebviewHtml(webview: vscode.Webview, nonce: string): string
       const msg = event.data;
       if (msg.type === 'init') {
         badge.textContent = msg.platform.toUpperCase();
+      } else if (msg.type === 'commands') {
+        renderCommands(msg.groups);
       } else if (msg.type === 'insertText') {
         const start = input.selectionStart;
         const end = input.selectionEnd;

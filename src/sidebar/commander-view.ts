@@ -2,6 +2,7 @@ import * as vscode from "vscode";
 import { ClaudeTerminalManager } from "../terminal/claude-terminal";
 import { getPlatform, maybeConvertPath } from "../platform";
 import { buildWebviewHtml, makeNonce } from "./webview-html";
+import { buildIndex } from "../explorer/indexer";
 
 type Inbound =
   | { type: "ready" }
@@ -57,6 +58,19 @@ export class CommanderViewProvider implements vscode.WebviewViewProvider {
     this.view?.webview.postMessage({ type: "insertText", text });
   }
 
+  async sendCommandList(): Promise<void> {
+    if (!this.view) return;
+    const index = await buildIndex();
+    const groups = index.categories.map((cat) => ({
+      label: cat.label,
+      entries: cat.entries.map((e) => ({
+        slash: e.slash,
+        desc: e.descriptionKo ?? e.description ?? "",
+      })),
+    }));
+    this.view.webview.postMessage({ type: "commands", groups });
+  }
+
   newSession(): void {
     this.terminal.newSession();
   }
@@ -76,6 +90,7 @@ export class CommanderViewProvider implements vscode.WebviewViewProvider {
     switch (msg.type) {
       case "ready":
         this.view?.webview.postMessage({ type: "init", platform: getPlatform() });
+        void this.sendCommandList();
         return;
       case "send":
         if (msg.text.trim()) this.terminal.send(msg.text);

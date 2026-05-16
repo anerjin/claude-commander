@@ -51,7 +51,10 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
   register("claudeCommander.newAutoModeSession", () => sidebar.newAutoModeSession());
   register("claudeCommander.attachFile", () => (sidebar as any).attach?.("file"));
   register("claudeCommander.attachFolder", () => (sidebar as any).attach?.("folder"));
-  register("claudeCommander.refreshExplorer", () => explorer.refresh());
+  register("claudeCommander.refreshExplorer", async () => {
+    await explorer.refresh();
+    await sidebar.sendCommandList();
+  });
   register("claudeCommander.openExplorer", async () => {
     const picked = await showCommandQuickPick();
     if (picked) await runCommand(picked);
