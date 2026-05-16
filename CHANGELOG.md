@@ -2,6 +2,18 @@
 
 ## [Unreleased]
 
+### M2 — Prompt Templates (2026-05-16)
+
+- **12개 한글 프롬프트 템플릿 번들** — 코드 리뷰 / 설명 / 리팩토링 / 테스트 생성 /
+  커밋 메시지 / PR 설명 / 버그 사냥 / 문서화 / 타입 에러 / i18n 추출 등
+- **변수 치환 엔진** — `{{file}}` `{{selection}}` `{{gitDiff}}` `{{gitDiffStaged}}`
+  `{{branch}}` `{{cwd}}` `{{lastCommit}}` `{{lineRange}}` 자동 해석
+- **변수 리졸버** — 현재 에디터(선택 영역 / 파일 경로 / 라인 범위) +
+  `git diff` / `git rev-parse` 결과 자동 주입
+- **Template Quick Pick** — `Cmd/Ctrl+K Cmd/Ctrl+T` 로 템플릿 선택,
+  렌더링 결과를 사이드바 입력창에 자동 삽입
+- 사이드바 타이틀 바에 템플릿 버튼 추가
+
 ### M1 — Command Explorer (2026-05-16)
 
 - **Command Explorer 트리 뷰** — 사이드바에 모든 슬래시 커맨드 카테고리별 표시

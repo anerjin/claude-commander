@@ -48,6 +48,14 @@ export class CommanderViewProvider implements vscode.WebviewViewProvider {
     this.terminal.clear();
   }
 
+  async insertText(text: string): Promise<void> {
+    if (!this.view) {
+      await vscode.commands.executeCommand(`${CommanderViewProvider.viewType}.focus`);
+    }
+    this.view?.show?.(true);
+    this.view?.webview.postMessage({ type: "insertText", text });
+  }
+
   newSession(): void {
     this.terminal.newSession();
   }

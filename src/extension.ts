@@ -5,6 +5,7 @@ import { getPlatform } from "./platform";
 import { CommandTreeProvider } from "./explorer/tree-provider";
 import { promptArgument, showCommandQuickPick } from "./explorer/quick-pick";
 import { CommandEntry } from "./explorer/types";
+import { pickAndRenderTemplate } from "./templates/quick-pick";
 
 export async function activate(context: vscode.ExtensionContext): Promise<void> {
   const platform = getPlatform();
@@ -55,6 +56,10 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
     if (picked) await runCommand(picked);
   });
   register("claudeCommander.runCommand", (entry: CommandEntry) => runCommand(entry));
+  register("claudeCommander.openTemplates", async () => {
+    const rendered = await pickAndRenderTemplate();
+    if (rendered !== undefined) await sidebar.insertText(rendered);
+  });
 
   if (autoLaunch) {
     setTimeout(() => {

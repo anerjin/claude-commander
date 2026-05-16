@@ -105,13 +105,18 @@
       {
         "command": "claudeCommander.runCommand",
         "title": "Claude Commander: 선택한 명령어 실행"
+      },
+      {
+        "command": "claudeCommander.openTemplates",
+        "title": "Claude Commander: 프롬프트 템플릿 선택",
+        "icon": "$(notebook-template)"
       }
     ],
     "menus": {
       "view/title": [
-        { "command": "claudeCommander.send",       "when": "view == claudeCommander.mainView", "group": "navigation@1" },
-        { "command": "claudeCommander.clear",      "when": "view == claudeCommander.mainView", "group": "navigation@2" },
-        { "command": "claudeCommander.newSession", "when": "view == claudeCommander.mainView", "group": "navigation@3" },
+        { "command": "claudeCommander.openTemplates", "when": "view == claudeCommander.mainView", "group": "navigation@1" },
+        { "command": "claudeCommander.clear",         "when": "view == claudeCommander.mainView", "group": "navigation@2" },
+        { "command": "claudeCommander.newSession",    "when": "view == claudeCommander.mainView", "group": "navigation@3" },
         { "command": "claudeCommander.refreshExplorer", "when": "view == claudeCommander.explorerView", "group": "navigation@1" },
         { "command": "claudeCommander.openExplorer",    "when": "view == claudeCommander.explorerView", "group": "navigation@2" }
       ],
@@ -130,6 +135,11 @@
         "command": "claudeCommander.openExplorer",
         "key": "ctrl+k ctrl+c",
         "mac": "cmd+k cmd+c"
+      },
+      {
+        "command": "claudeCommander.openTemplates",
+        "key": "ctrl+k ctrl+t",
+        "mac": "cmd+k cmd+t"
       }
     ],
     "configuration": {
