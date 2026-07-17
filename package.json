@@ -2,7 +2,7 @@
   "name": "claude-commander",
   "displayName": "Claude Commander",
   "description": "Claude Code를 위한 한국어 친화형 커맨드 익스플로러 + 멀티세션 컴패니언",
-  "version": "0.0.1",
+  "version": "0.0.4",
   "publisher": "vibecode",
   "license": "MIT",
   "icon": "media/icon.png",
@@ -34,8 +34,12 @@
   ],
   "main": "./dist/extension.js",
   "capabilities": {
-    "virtualWorkspaces": { "supported": true },
-    "untrustedWorkspaces": { "supported": true }
+    "virtualWorkspaces": {
+      "supported": true
+    },
+    "untrustedWorkspaces": {
+      "supported": true
+    }
   },
   "contributes": {
     "viewsContainers": {
@@ -119,14 +123,37 @@
     ],
     "menus": {
       "view/title": [
-        { "command": "claudeCommander.openTemplates", "when": "view == claudeCommander.mainView", "group": "navigation@1" },
-        { "command": "claudeCommander.clear",         "when": "view == claudeCommander.mainView", "group": "navigation@2" },
-        { "command": "claudeCommander.newSession",    "when": "view == claudeCommander.mainView", "group": "navigation@3" },
-        { "command": "claudeCommander.refreshExplorer", "when": "view == claudeCommander.explorerView", "group": "navigation@1" },
-        { "command": "claudeCommander.openExplorer",    "when": "view == claudeCommander.explorerView", "group": "navigation@2" }
+        {
+          "command": "claudeCommander.openTemplates",
+          "when": "view == claudeCommander.mainView",
+          "group": "navigation@1"
+        },
+        {
+          "command": "claudeCommander.clear",
+          "when": "view == claudeCommander.mainView",
+          "group": "navigation@2"
+        },
+        {
+          "command": "claudeCommander.newSession",
+          "when": "view == claudeCommander.mainView",
+          "group": "navigation@3"
+        },
+        {
+          "command": "claudeCommander.refreshExplorer",
+          "when": "view == claudeCommander.explorerView",
+          "group": "navigation@1"
+        },
+        {
+          "command": "claudeCommander.openExplorer",
+          "when": "view == claudeCommander.explorerView",
+          "group": "navigation@2"
+        }
       ],
       "commandPalette": [
-        { "command": "claudeCommander.runCommand", "when": "false" }
+        {
+          "command": "claudeCommander.runCommand",
+          "when": "false"
+        }
       ]
     },
     "keybindings": [
@@ -175,7 +202,9 @@
     "package": "node esbuild.config.mjs --production",
     "typecheck": "tsc --noEmit",
     "lint": "eslint src --ext ts",
-    "test": "vitest run"
+    "test": "vitest run",
+    "sync:catalog": "node scripts/sync-catalog.mjs",
+    "sync:catalog:stubs": "node scripts/sync-catalog.mjs --stubs"
   },
   "devDependencies": {
     "@types/node": "^20.11.0",
@@ -188,5 +217,11 @@
     "eslint": "^8.57.0",
     "typescript": "^5.4.0",
     "vitest": "^1.4.0"
+  },
+  "allowScripts": {
+    "esbuild@0.20.2": true,
+    "esbuild@0.21.5": true,
+    "keytar@7.9.0": true,
+    "@vscode/vsce-sign@2.0.9": true
   }
 }

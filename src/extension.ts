@@ -1,4 +1,6 @@
 import * as vscode from "vscode";
+import * as os from "node:os";
+import * as path from "node:path";
 import { CommanderViewProvider } from "./sidebar/commander-view";
 import { ClaudeTerminalManager } from "./terminal/claude-terminal";
 import { getPlatform } from "./platform";
@@ -30,6 +32,34 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
     vscode.window.registerTreeDataProvider("claudeCommander.explorerView", explorer)
   );
   void explorer.refresh();
+
+  // Auto-refresh: watch every file-based command/skill source so newly added or
+  // edited commands appear without a manual refresh. Built-in commands are baked
+  // into the claude binary and cannot be watched — they live in the catalog.
+  let refreshTimer: ReturnType<typeof setTimeout> | undefined;
+  const scheduleRefresh = () => {
+    if (refreshTimer) clearTimeout(refreshTimer);
+    refreshTimer = setTimeout(async () => {
+      await explorer.refresh();
+      await sidebar.sendCommandList();
+    }, 300);
+  };
+
+  const homeClaude = vscode.Uri.file(path.join(os.homedir(), ".claude"));
+  const watchers = [
+    vscode.workspace.createFileSystemWatcher(new vscode.RelativePattern(homeClaude, "commands/**/*.md")),
+    vscode.workspace.createFileSystemWatcher(new vscode.RelativePattern(homeClaude, "skills/**/*.md")),
+    vscode.workspace.createFileSystemWatcher(new vscode.RelativePattern(homeClaude, "plugins/installed_plugins.json")),
+    vscode.workspace.createFileSystemWatcher("**/.claude/commands/**/*.md"),
+    vscode.workspace.createFileSystemWatcher("**/.claude/skills/**/*.md"),
+  ];
+  for (const w of watchers) {
+    w.onDidCreate(scheduleRefresh);
+    w.onDidChange(scheduleRefresh);
+    w.onDidDelete(scheduleRefresh);
+    context.subscriptions.push(w);
+  }
+  context.subscriptions.push(vscode.workspace.onDidChangeWorkspaceFolders(scheduleRefresh));
 
   const runCommand = async (entry: CommandEntry) => {
     let payload = entry.slash;

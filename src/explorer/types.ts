@@ -1,4 +1,11 @@
-export type CommandSourceKind = "builtin" | "user" | "plugin-command" | "plugin-skill";
+export type CommandSourceKind =
+  | "builtin"
+  | "user"
+  | "project-command"
+  | "user-skill"
+  | "project-skill"
+  | "plugin-command"
+  | "plugin-skill";
 
 export interface CommandSource {
   kind: CommandSourceKind;

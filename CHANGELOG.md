@@ -1,5 +1,39 @@
 # Changelog
 
+## [0.0.4] — 2026-07-16
+
+### 카탈로그 동기화 도구 + 내장 명령 추가
+
+- **`scripts/sync-catalog.mjs`** — 설치된 `claude` 바이너리에서 슬래시 명령 정의
+  (`type:"local"|"local-jsx"|"prompt"` 및 스킬 `pluginCommand`)를 추출해 `catalog.ts`와
+  대조, 신규/제거 후보를 리포트하는 유지보수 도구. `npm run sync:catalog`(리포트),
+  `npm run sync:catalog:stubs`(붙여넣기용 스텁). `CLAUDE_BIN` 환경변수로 경로 지정 가능
+- 위 도구로 확인한 **사용자向 내장 명령 33개 추가** — `/artifacts` `/workflows`
+  `/release-notes` `/rename` `/theme` `/tui` `/voice` `/session` `/recap` `/update`
+  `/reload-skills` `/skill-doctor` `/autocompact` `/pause-memory` `/usage-credits`
+  `/design` `/setup-bedrock` `/setup-vertex` `/statusline` `/ultraplan` 등 (내장 총 111개)
+- 전환 상태 UI(`/pro-trial-expired` 등)·deprecated(`/extra-usage` `/ultrareview`)·
+  서브커맨드(`/design-consent` `/design-revoke`)는 의도적으로 제외
+
+## [0.0.3] — 2026-07-16
+
+### 파일 기반 명령/스킬 자동 수집 + 실시간 감지
+
+- **프로젝트 커맨드 스캔** — 열려 있는 각 워크스페이스의 `.claude/commands/*.md` 자동 수집 (`📁 프로젝트 커맨드`)
+- **스킬 스캔** — `~/.claude/skills/*/SKILL.md`(사용자) 및 `<워크스페이스>/.claude/skills/*/SKILL.md`(프로젝트) 자동 수집 (`🧠 스킬`)
+- **FileSystemWatcher** — 위 디렉토리 + `~/.claude/commands`·`installed_plugins.json` 변경 시 자동 새로고침 (수동 새로고침 불필요, 300ms 디바운스)
+- 참고: 내장 슬래시 명령은 `claude` 바이너리에 컴파일되어 런타임 수집이 불가능하여 카탈로그로 유지
+
+## [0.0.2] — 2026-07-16
+
+### 내장 명령 카탈로그 대폭 확장 (Claude Code 2.1.x)
+
+- 내장 명령 40개 → 79개로 확장, 각 항목 한글 설명·인자 힌트 포함
+- 리뷰/품질 스킬 추가: `/code-review` `/security-review` `/simplify` `/verify` `/run`
+- 도구 스킬 추가: `/deep-research` `/dataviz` `/claude-api` `/fewer-permission-prompts` `/debug`
+- 세션/작업 커맨드 추가: `/usage` `/skills` `/tasks` `/background` `/fork` `/branch` `/goal` `/btw` `/copy` `/diff` `/cd`
+- 대규모/연동 커맨드 추가: `/batch` `/autofix-pr` `/teleport` `/desktop` `/design-sync` `/install-slack-app` 등
+
 ## [Unreleased]
 
 ### Auto Mode 버튼 (2026-05-16)
